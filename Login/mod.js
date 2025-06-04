@@ -71,3 +71,4 @@ async function submit_details() {
     console.log(resJson);
   }
 }
+

