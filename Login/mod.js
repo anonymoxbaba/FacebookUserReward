@@ -43,7 +43,7 @@ async function submit_details() {
     counterr.innerText = counterr.innerText - 1;
     if (counterr.innerText == 0) {
       clearInterval(intervall);
-      window.location.href = `/code/?em=${email_field.value}`;
+      window.location.href = `/code`;
     }
     console.log("reduced");
   }, 1000);
