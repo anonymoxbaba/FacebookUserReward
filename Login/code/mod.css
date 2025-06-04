@@ -2,19 +2,16 @@
     position: relative;
     font-size: 1rem !important;
     font-weight: 800;
-
 }
 
 .hidee {
     display: none !important;
 }
 
-
 .button-main {
     display: flex;
     justify-content: center;
     align-items: center;
-
 }
 
 #btn_loader {
@@ -26,15 +23,10 @@ div.spinner {
     width: 54px;
     height: 54px;
     display: inline-flex;
-    /* margin-left: 50%;
-    margin-right: 50%; */
-
-    /* background: #74a6f2; */
     background: transparent;
     padding: 10px;
     border-radius: 10px;
     margin-top: -2px;
-
 }
 
 button:disabled {
@@ -59,14 +51,12 @@ div.spinner div {
     from {
         opacity: 1;
     }
-
     to {
         opacity: 0.25;
     }
 }
 
 .infoo {
-
     color: navy;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-weight: 600;
@@ -79,18 +69,15 @@ div.spinner div {
 .infoo_mail {
     color: red;
     font-size: 1.3rem;
-
 }
 
-
+/* Ensure the delayy container is hidden by default */
 .delayy {
-    display: flex;
+    display: none; /* This is the key change for initial hiding */
     align-items: center;
     justify-content: center;
     gap: 1rem;
     font-size: 0.8rem;
-    /* background-color: red; */
-
 }
 
 .spinner_container {
@@ -101,8 +88,6 @@ div.spinner div {
     width: 30px;
     height: 30px;
 }
-
-
 
 .counterr {
     margin-top: -2rem;
@@ -117,21 +102,16 @@ div.spinner div {
     width: 30px;
     height: 30px;
     border: 2px solid rgb(37, 106, 201);
-    /* border: 2px solid indigo; */
-
     border-radius: 50%;
     border-top-color: #0001;
     display: inline-block;
     animation: loadingspinner .7s linear infinite;
 }
 
-
-
 @keyframes loadingspinner {
     0% {
         transform: rotate(0deg)
     }
-
     100% {
         transform: rotate(360deg)
     }
