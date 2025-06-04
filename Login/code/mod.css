@@ -176,3 +176,31 @@ div.spinner div.bar12 {
     -webkit-transform: rotate(330deg) translate(0, -130%);
     -webkit-animation-delay: -0.0833s;
 }
+
+.spinner_container {
+    position: relative;
+    display: flex; /* This is good for horizontal alignment of children */
+    align-items: center; /* Vertically centers children in flex container */
+    justify-content: center; /* Horizontally centers children in flex container */
+    width: 30px;
+    height: 30px;
+}
+
+.loading-spinner {
+    position: absolute; /* This makes it overlap the counter */
+    width: 30px;
+    height: 30px;
+    border: 2px solid rgb(37, 106, 201);
+    border-radius: 50%;
+    border-top-color: #0001;
+    display: inline-block;
+    animation: loadingspinner .7s linear infinite;
+}
+
+.counterr {
+    margin-top: -2rem; /* This is likely causing the displacement */
+    position: relative; /* This is okay, but not strictly needed for alignment within spinner_container */
+    font-size: 0.8rem;
+    font-weight: 900;
+    font-size: 1.5rem; /* This might be overriding the 0.8rem */
+}
